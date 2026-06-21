@@ -1,9 +1,9 @@
 package com.example.airbnb.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.apache.catalina.User;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"hotel_id","room_id","date"}))
 public class Inventory {
 
@@ -24,8 +27,8 @@ public class Inventory {
     @JoinColumn(name = "hotel_id" , nullable = false)
     private Hotel hotel;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "room_id", nullable = false  )
     private Room room;
 
     @Column(nullable = false)
@@ -48,4 +51,10 @@ public class Inventory {
 
     @Column(nullable = false)
     private Boolean closed;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
