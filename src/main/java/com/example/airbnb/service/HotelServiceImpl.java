@@ -2,7 +2,10 @@ package com.example.airbnb.service;
 
 import com.example.airbnb.Exceptions.ResourceNotFoundException;
 import com.example.airbnb.Mapper.HotelMapper;
+import com.example.airbnb.Mapper.RoomMapper;
 import com.example.airbnb.dto.HotelDTO;
+import com.example.airbnb.dto.HotelInfoDTO;
+import com.example.airbnb.dto.RoomDTO;
 import com.example.airbnb.entity.Hotel;
 import com.example.airbnb.entity.Room;
 import com.example.airbnb.repository.HotelRepository;
@@ -12,20 +15,24 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService {
+    private final RoomMapper roomMapper;
 
 
     private final HotelRepository hotelRepository;
     private final HotelMapper hotelMapper;
-    private final InventoryServiceImpl inventoryService;
+    private final InventoryService inventoryService;
     private final RoomRepository roomRepository;
 
     @Override
@@ -87,6 +94,16 @@ public class HotelServiceImpl implements HotelService {
         if(hotelRepository.existsHotelById(hotelId) ==  false) {
             throw new ResourceNotFoundException("hotel with id " + hotelId + " not found");
         }
+    }
+
+    @Override
+    public ResponseEntity<HotelInfoDTO> getHotelInfoById(Long hotelId) {
+
+        Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(
+                () -> new ResourceNotFoundException("hotel with id " + hotelId + " not found"));
+        List<RoomDTO> rooms = hotel.getRooms().stream().map(roomMapper::toRoomDTO).collect(Collectors.toList());
+
+        return  ResponseEntity.ok().body( new HotelInfoDTO(hotelMapper.toHotelDTO(hotel),rooms));
     }
 
 }

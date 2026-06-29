@@ -26,9 +26,11 @@ public class Hotel {
 
     private String City;
 
+    @SuppressWarnings("JpaAttributeTypeInspection")
     @Column(columnDefinition = "TEXT[]")
     private String[] photos;
 
+    @SuppressWarnings("JpaAttributeTypeInspection")
     @Column(columnDefinition = "TEXT[]")
     private String[] amenities;
 

@@ -1,19 +1,28 @@
 package com.example.airbnb.service;
 
+import com.example.airbnb.Mapper.HotelMapper;
+import com.example.airbnb.dto.HotelDTO;
+import com.example.airbnb.dto.HotelSearchRequestDTO;
+import com.example.airbnb.entity.Hotel;
 import com.example.airbnb.entity.Inventory;
 import com.example.airbnb.entity.Room;
 import com.example.airbnb.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
 
     private  final InventoryRepository inventoryRepository;
+    private final HotelMapper hotelMapper;
 
     @Override
     public void initializeRoomForYear(Room room) {
@@ -50,4 +59,26 @@ public class InventoryServiceImpl implements InventoryService {
     public void deleteAllByRoom(Room room) {
         inventoryRepository.deleteByRoom(room);
     }
+
+    @Override
+    public Page<HotelDTO> searchHotels(HotelSearchRequestDTO hotelSearchRequestDTO) {
+        Pageable pageable = PageRequest.of(hotelSearchRequestDTO.page(), hotelSearchRequestDTO.limit());
+
+        long dateCount = ChronoUnit.DAYS.between(
+                hotelSearchRequestDTO.startDate(),
+                hotelSearchRequestDTO.endDate()
+        ) + 1; // inclusive count
+
+        Page<Hotel> hotelPage = inventoryRepository.findHotelsWithAvailableInventory(
+                hotelSearchRequestDTO.city(),
+                hotelSearchRequestDTO.startDate(),
+                hotelSearchRequestDTO.endDate(),
+                hotelSearchRequestDTO.roomsCount(),
+                dateCount,
+                pageable
+        );
+
+        return hotelPage.map(hotel -> hotelMapper.toHotelDTO(hotel));
+    }
+
 }

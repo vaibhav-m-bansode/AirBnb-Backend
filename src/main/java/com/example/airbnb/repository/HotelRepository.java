@@ -12,4 +12,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
 
     Boolean existsHotelById(Long id);
+
+    Hotel getHotelById(Long id);
 }
