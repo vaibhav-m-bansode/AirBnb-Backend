@@ -1,7 +1,6 @@
 package com.example.airbnb.entity;
 
 import com.example.airbnb.entity.enums.Gender;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

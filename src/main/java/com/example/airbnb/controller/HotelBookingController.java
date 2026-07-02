@@ -5,7 +5,6 @@ import com.example.airbnb.dto.BookingRequest;
 import com.example.airbnb.dto.GuestDto;
 import com.example.airbnb.service.BookingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,9 +1,6 @@
 package com.example.airbnb.dto;
 
-import jakarta.persistence.Column;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public record RoomDTO(
         Long id,

@@ -1,7 +1,5 @@
 package com.example.airbnb.dto;
 
-import lombok.Data;
-
 import java.time.LocalDate;
 
 

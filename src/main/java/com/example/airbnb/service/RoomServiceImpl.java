@@ -1,19 +1,16 @@
 package com.example.airbnb.service;
 
 import com.example.airbnb.Exceptions.ResourceNotFoundException;
-import com.example.airbnb.Mapper.HotelMapper;
 import com.example.airbnb.Mapper.RoomMapper;
 import com.example.airbnb.dto.RoomDTO;
 import com.example.airbnb.entity.Hotel;
 import com.example.airbnb.entity.Room;
 import com.example.airbnb.repository.HotelRepository;
-import com.example.airbnb.repository.InventoryRepository;
 import com.example.airbnb.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.cfg.MapperBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;

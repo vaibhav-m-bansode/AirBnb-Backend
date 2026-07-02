@@ -1,6 +1,7 @@
 package com.example.airbnb.dto;
 
-import com.example.airbnb.entity.*;
+import com.example.airbnb.entity.Booking;
+import com.example.airbnb.entity.User;
 import com.example.airbnb.entity.enums.BookingStatus;
 
 import java.time.LocalDate;

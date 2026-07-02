@@ -2,7 +2,6 @@ package com.example.airbnb.entity;
 
 
 import com.example.airbnb.entity.enums.BookingStatus;
-import com.example.airbnb.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

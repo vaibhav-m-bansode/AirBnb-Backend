@@ -2,7 +2,6 @@ package com.example.airbnb.service;
 
 import com.example.airbnb.dto.HotelDTO;
 import com.example.airbnb.dto.HotelInfoDTO;
-import com.example.airbnb.entity.Hotel;
 import org.springframework.http.ResponseEntity;
 
 public interface HotelService {
