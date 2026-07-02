@@ -2,7 +2,6 @@ package com.example.airbnb.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -21,7 +20,7 @@ public class Inventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id" , nullable = false)
@@ -35,10 +34,10 @@ public class Inventory {
     private LocalDate date;
 
     @Column(nullable = false,columnDefinition = "INTEGER DEFAULT 0")
-    private Integer bookedCount;
+    private int bookedCount = 0;
 
     @Column(nullable = false,columnDefinition = "INTEGER DEFAULT 0")
-    private Integer reservedCount;
+    private int reservedCount  = 0;
 
     @Column(nullable = false)
         private Integer totalCount;

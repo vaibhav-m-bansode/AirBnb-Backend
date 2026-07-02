@@ -1,11 +1,11 @@
 package com.example.airbnb.service;
 
 import com.example.airbnb.Mapper.HotelMapper;
-import com.example.airbnb.dto.HotelDTO;
+import com.example.airbnb.dto.HotelPriceDto;
 import com.example.airbnb.dto.HotelSearchRequestDTO;
-import com.example.airbnb.entity.Hotel;
 import com.example.airbnb.entity.Inventory;
 import com.example.airbnb.entity.Room;
+import com.example.airbnb.repository.HotelMinPriceRepository;
 import com.example.airbnb.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +23,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     private  final InventoryRepository inventoryRepository;
     private final HotelMapper hotelMapper;
+    private final HotelMinPriceRepository hotelMinPriceRepository;
 
     @Override
     public void initializeRoomForYear(Room room) {
@@ -61,7 +62,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Page<HotelDTO> searchHotels(HotelSearchRequestDTO hotelSearchRequestDTO) {
+    public Page<HotelPriceDto> searchHotels(HotelSearchRequestDTO hotelSearchRequestDTO) {
         Pageable pageable = PageRequest.of(hotelSearchRequestDTO.page(), hotelSearchRequestDTO.limit());
 
         long dateCount = ChronoUnit.DAYS.between(
@@ -69,7 +70,7 @@ public class InventoryServiceImpl implements InventoryService {
                 hotelSearchRequestDTO.endDate()
         ) + 1; // inclusive count
 
-        Page<Hotel> hotelPage = inventoryRepository.findHotelsWithAvailableInventory(
+        return hotelMinPriceRepository.findHotelsWithAvailableInventory(
                 hotelSearchRequestDTO.city(),
                 hotelSearchRequestDTO.startDate(),
                 hotelSearchRequestDTO.endDate(),
@@ -77,8 +78,6 @@ public class InventoryServiceImpl implements InventoryService {
                 dateCount,
                 pageable
         );
-
-        return hotelPage.map(hotel -> hotelMapper.toHotelDTO(hotel));
     }
 
 }
