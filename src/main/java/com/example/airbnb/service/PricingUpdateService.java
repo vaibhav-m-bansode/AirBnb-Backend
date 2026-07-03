@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -36,15 +35,17 @@ public class PricingUpdateService {
     private final HotelMinPriceRepository hotelMinPriceRepository;
 
 
-    @Scheduled(cron = "0 0/5 * * * *")
-    public void updatePrices(){
+    //@Scheduled(cron = "0 0/5 * * * *")
+    public void updatePrices() {
         log.info("Updating prices for hotels!");
         int page = 0;
         int batchSize = 100;
 
-        while(true){
-            Page<Hotel> hotelPage = hotelRepository.findAll(PageRequest.of(page,batchSize));
-            if(hotelPage.isEmpty()){break;}
+        while (true) {
+            Page<Hotel> hotelPage = hotelRepository.findAll(PageRequest.of(page, batchSize));
+            if (hotelPage.isEmpty()) {
+                break;
+            }
             page++;
 
             hotelPage.getContent().forEach(this::updateHotelPrices);
@@ -52,26 +53,27 @@ public class PricingUpdateService {
 
     }
 
-    private void updateHotelPrices(Hotel hotel){
+    private void updateHotelPrices(Hotel hotel) {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now().plusYears(1);
 
-        List<Inventory> inventoryList = inventoryRepository.findByHotelAndDateBetween(hotel,startDate,endDate);
+        List<Inventory> inventoryList = inventoryRepository.findByHotelAndDateBetween(hotel, startDate, endDate);
 
         updateInventoryPrices(inventoryList);
-        updateHotelMinPrice(hotel,inventoryList,startDate,endDate);
+        updateHotelMinPrice(hotel, inventoryList, startDate, endDate);
     }
 
-    private  void updateInventoryPrices(List<Inventory> inventory){
+    private void updateInventoryPrices(List<Inventory> inventory) {
         inventory.forEach(inventoryItem -> {
-           BigDecimal dynamicPrice = pricingService.calculatePrice(inventoryItem);
-           inventoryItem.setPrice(dynamicPrice);
+            BigDecimal dynamicPrice = pricingService.calculatePrice(inventoryItem);
+            inventoryItem.setPrice(dynamicPrice);
         });
         inventoryRepository.saveAll(inventory);
     }
-    private void updateHotelMinPrice(Hotel hotel, List<Inventory> inventoryList, LocalDate startDate, LocalDate endDate){
 
-        Map<LocalDate,BigDecimal> mp = new HashMap<>();
+    private void updateHotelMinPrice(Hotel hotel, List<Inventory> inventoryList, LocalDate startDate, LocalDate endDate) {
+
+        Map<LocalDate, BigDecimal> mp = new HashMap<>();
 
         inventoryList.forEach(inventoryItem -> {
             BigDecimal price = inventoryItem.getPrice();
@@ -88,9 +90,9 @@ public class PricingUpdateService {
 
 
         List<HotelMinPrice> hotelMinPriceList = new ArrayList<>();
-        mp.forEach((date,price)->{
-            HotelMinPrice hotelMinPrice = hotelMinPriceRepository.findByHotelAndDate(hotel,date)
-                    .orElse(new HotelMinPrice(hotel,date));
+        mp.forEach((date, price) -> {
+            HotelMinPrice hotelMinPrice = hotelMinPriceRepository.findByHotelAndDate(hotel, date)
+                    .orElse(new HotelMinPrice(hotel, date));
             hotelMinPrice.setPrice(price);
             hotelMinPriceList.add(hotelMinPrice);
         });

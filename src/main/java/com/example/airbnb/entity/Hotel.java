@@ -44,7 +44,10 @@ public class Hotel {
 
     private Boolean active;
 
-    @OneToMany(mappedBy = "hotel" , fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
+    private User owner;
+
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Room>  rooms;
+    private List<Room> rooms;
 }

@@ -10,4 +10,5 @@ public record HotelDTO(
         String[] amenities,
         HotelContactInfo contactInfo,
         Boolean active
-) {}
+) {
+}

@@ -21,7 +21,7 @@ import java.time.temporal.ChronoUnit;
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
 
-    private  final InventoryRepository inventoryRepository;
+    private final InventoryRepository inventoryRepository;
     private final HotelMapper hotelMapper;
     private final HotelMinPriceRepository hotelMinPriceRepository;
 
@@ -29,10 +29,10 @@ public class InventoryServiceImpl implements InventoryService {
     public void initializeRoomForYear(Room room) {
 
         LocalDate today = LocalDate.now();
-        java.time.LocalDate endDate =  today.plusYears(1);
+        java.time.LocalDate endDate = today.plusYears(1);
 
         LocalDate date = today;
-        while(date.isBefore(endDate)) {
+        while (date.isBefore(endDate)) {
             Inventory inventory = Inventory.builder()
                     .room(room)
                     .date(date)

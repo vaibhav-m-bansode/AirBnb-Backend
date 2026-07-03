@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 
 @RequiredArgsConstructor
-class UrgencyPricingStrategy implements  PricingStrategy {
+class UrgencyPricingStrategy implements PricingStrategy {
 
     private final PricingStrategy pricingStrategy;
 
@@ -17,7 +17,7 @@ class UrgencyPricingStrategy implements  PricingStrategy {
         BigDecimal price = pricingStrategy.calculatePrice(inventory);
         LocalDate today = LocalDate.now();
 
-        if(!inventory.getDate().isBefore(today) &&  !inventory.getDate().isBefore(today.plusDays(7))) {
+        if (!inventory.getDate().isBefore(today) && !inventory.getDate().isBefore(today.plusDays(7))) {
             price = price.multiply(BigDecimal.valueOf(1.15));
         }
         return price;

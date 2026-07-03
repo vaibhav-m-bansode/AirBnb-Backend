@@ -36,9 +36,9 @@ public class Room {
     @Column(columnDefinition = "TEXT[]")
     private String[] amenities;
 
-    private  Integer totalCount;
+    private Integer totalCount;
 
-    private  Integer capacity;
+    private Integer capacity;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

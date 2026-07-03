@@ -1,6 +1,7 @@
 package com.example.airbnb.service;
 
 import com.example.airbnb.Exceptions.ResourceNotFoundException;
+import com.example.airbnb.Exceptions.UnAuthorizedException;
 import com.example.airbnb.Mapper.BookingMapper;
 import com.example.airbnb.Mapper.GuestDtoMapper;
 import com.example.airbnb.dto.BookingDto;
@@ -12,6 +13,7 @@ import com.example.airbnb.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -62,8 +64,7 @@ public class BookingServiceImpl implements BookingService {
 
         // create the booking
         //TODO : remove Dummy user
-        User user = new User();
-        user.setId(234L);
+        User user = getUser();
 
         //todo : calculate dynamic pricing
 
@@ -84,7 +85,11 @@ public class BookingServiceImpl implements BookingService {
         log.info("Adding guests for booking with {}", bookingId);
 
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new ResourceNotFoundException("Booking Not Found with id " + bookingId));
+        User user = getUser();
 
+        if (!user.equals(booking.getUser())) {
+            throw new UnAuthorizedException("Booking dose not belong to this user with id:" + user.getId());
+        }
         if (hasBookingExpired(booking)) {
             throw new IllegalStateException("Booking Expired");
         }
@@ -116,8 +121,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private User getUser() {
-        User user = new User();
-        user.setId(234L);
-        return user;
+
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

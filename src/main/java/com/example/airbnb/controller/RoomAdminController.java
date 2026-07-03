@@ -1,7 +1,6 @@
 package com.example.airbnb.controller;
 
 import com.example.airbnb.dto.RoomDTO;
-import com.example.airbnb.globalAdvice.ApiResponse;
 import com.example.airbnb.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,32 +17,33 @@ public class RoomAdminController {
     private final RoomService roomService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<RoomDTO>>> getAllRoomsInHotel(@PathVariable Long hotelId) {
+    public ResponseEntity<List<RoomDTO>> getAllRoomsInHotel(@PathVariable Long hotelId) {
         List<RoomDTO> rooms = roomService.getAllRoomsInHotel(hotelId);
-        return ResponseEntity.ok().body(new ApiResponse<>(true , rooms , null));
+        return ResponseEntity.ok().body(rooms);
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity<ApiResponse<RoomDTO>> getRoomById(@PathVariable Long roomId, @PathVariable String hotelId) {
+    public ResponseEntity<RoomDTO> getRoomById(@PathVariable Long roomId, @PathVariable String hotelId) {
         RoomDTO room = roomService.getRoomById(roomId);
-        return ResponseEntity.ok().body(new ApiResponse<>(true , room , null));
+        return ResponseEntity.ok().body(room);
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<RoomDTO>> createNewRoom(@RequestBody RoomDTO roomDTO , @PathVariable Long hotelId) {
-        RoomDTO createdRoom = roomService.CreateRoom(hotelId ,roomDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true , createdRoom , null));
+    public ResponseEntity<RoomDTO> createNewRoom(@RequestBody RoomDTO roomDTO, @PathVariable Long hotelId) {
+        RoomDTO createdRoom = roomService.CreateRoom(hotelId, roomDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdRoom);
     }
+
     @DeleteMapping("/{roomId}")
-    public ResponseEntity<ApiResponse<RoomDTO>> deleteRoom(@PathVariable Long hotelId ,@PathVariable Long roomId) {
+    public ResponseEntity<RoomDTO> deleteRoom(@PathVariable Long hotelId, @PathVariable Long roomId) {
         roomService.deleteRoomById(roomId);
         return ResponseEntity.noContent().build();
 
     }
 
     @PutMapping("/")
-    public ResponseEntity<ApiResponse<RoomDTO>> updateRoom(@RequestBody RoomDTO roomDTO) {
+    public ResponseEntity<RoomDTO> updateRoom(@RequestBody RoomDTO roomDTO) {
         RoomDTO room = roomService.UpdateRoom(roomDTO);
-        return ResponseEntity.ok().body(new ApiResponse<>(true , room , null));
+        return ResponseEntity.ok().body(room);
     }
 }

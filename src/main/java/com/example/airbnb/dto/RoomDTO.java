@@ -11,5 +11,6 @@ public record RoomDTO(
         String[] amenities,
         Integer totalCount,
         Integer capacity
-) {}
+) {
+}
 

@@ -23,5 +23,5 @@ public record BookingDto(
         LocalDateTime updatedAt,
         BookingStatus bookingStatus,
         List<GuestDto> guests
-)  {
+) {
 }

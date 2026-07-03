@@ -24,7 +24,7 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "hotel_id" , nullable = false)
+    @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
     @ManyToOne
@@ -45,7 +45,6 @@ public class Booking {
     private LocalDate checkOutDate;
 
 
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -64,10 +63,9 @@ public class Booking {
     @JoinTable(
             name = "booking_guest",
             joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name   = "guest_id")
-            )
+            inverseJoinColumns = @JoinColumn(name = "guest_id")
+    )
     private List<Guest> guests;
-
 
 
 }

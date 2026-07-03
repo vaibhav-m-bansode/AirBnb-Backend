@@ -14,6 +14,7 @@ public interface HotelService {
     void deleteHotelById(Long hotelId);
 
     void activateHotelById(Long hotelId);
+
     void isHotelExist(Long hotelId);
 
     ResponseEntity<HotelInfoDTO> getHotelInfoById(Long hotelId);

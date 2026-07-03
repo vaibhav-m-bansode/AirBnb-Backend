@@ -10,5 +10,5 @@ public record GuestDto(
         String name,
         Gender gender,
         Integer age
-)  {
+) {
 }

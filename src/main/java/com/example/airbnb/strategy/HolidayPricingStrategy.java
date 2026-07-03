@@ -16,7 +16,7 @@ public class HolidayPricingStrategy implements PricingStrategy {
         BigDecimal price = pricingStrategy.calculatePrice(inventory);
 
         boolean isHoliday = true; // call 3rd party api
-        if(isHoliday){
+        if (isHoliday) {
             price = price.multiply(BigDecimal.valueOf(1.25));
         }
         return price;

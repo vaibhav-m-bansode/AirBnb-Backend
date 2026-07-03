@@ -4,5 +4,5 @@ import com.example.airbnb.entity.Hotel;
 
 public record HotelPriceDto(
         Hotel Hotel,
-        Double price)  {
+        Double price) {
 }
